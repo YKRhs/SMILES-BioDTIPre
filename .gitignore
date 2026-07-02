@@ -1,0 +1,45 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Outputs
+outputs/*
+!outputs/README.md
+web_predictor/outputs/
+*.log
+
+# Generated feature files and model outputs
+data/*_smilesT5*.csv
+data/*_bioT5*.csv
+data/ncl_*.csv
+data/*.xlsx
+data/*.pkl
+*.pkl
+*.joblib
+
+# Keep raw dataset and examples
+!data/train.csv
+!data/test.csv
+!examples/*.csv
+!configs/*.json
+
+# Pretrained models and trained checkpoints
+smilesT5/
+bioT5+/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Documentation placeholders
+!models/README.md
+!data/README.md
+!outputs/README.md
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

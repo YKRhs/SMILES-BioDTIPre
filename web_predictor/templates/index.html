@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SMILES-BioDTIPre</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Drug-target interaction predictor</p>
+        <h1>SMILES-BioDTIPre</h1>
+      </div>
+      <div class="status" id="status">Checking model status...</div>
+    </header>
+
+    {% if missing %}
+    <section class="alert">
+      <strong>Missing model files:</strong>
+      <ul>
+        {% for item in missing %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <section class="workspace">
+      <div class="forms">
+        <form class="predict-form" method="post" action="{{ url_for('predict') }}">
+          <h2>Single prediction</h2>
+          <label>
+            <span>Drug SMILES</span>
+            <textarea name="smiles" rows="4" placeholder="Example: CC(=O)OC1=CC=CC=C1C(=O)O" required></textarea>
+          </label>
+
+          <label>
+            <span>Target protein sequence</span>
+            <textarea name="sequence" rows="9" placeholder="Paste an amino acid sequence, for example MVLSPADKTNVKAA..." required></textarea>
+          </label>
+
+          <button type="submit">Predict interaction</button>
+        </form>
+
+        <form class="predict-form" method="post" action="{{ url_for('batch_predict') }}" enctype="multipart/form-data">
+          <h2>Batch prediction</h2>
+          <label>
+            <span>CSV file</span>
+            <input type="file" name="file" accept=".csv" required>
+          </label>
+          <p class="note">The CSV file must contain a <strong>SMILES</strong> column and a <strong>Protein</strong> column. The system also accepts <strong>Target Sequence</strong> or <strong>Sequence</strong> as the protein column name.</p>
+          <button type="submit">Upload and predict</button>
+        </form>
+      </div>
+
+      <aside class="panel">
+        <h2>Model setting</h2>
+        <dl>
+          <dt>Drug encoder</dt>
+          <dd>SMILES-T5</dd>
+          <dt>Target encoder</dt>
+          <dd>BioT5+</dd>
+          <dt>Classifier</dt>
+          <dd>XGBoost + LightGBM</dd>
+          <dt>XGBoost weight</dt>
+          <dd>{{ "%.3f"|format(config.best_xgb_weight) }}</dd>
+          <dt>LightGBM weight</dt>
+          <dd>{{ "%.3f"|format(config.best_lgb_weight) }}</dd>
+          <dt>Threshold</dt>
+          <dd>{{ "%.3f"|format(config.best_threshold) }}</dd>
+        </dl>
+        <p class="note">The first prediction loads SMILES-T5, BioT5+, XGBoost and LightGBM. It can take longer than later predictions.</p>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    async function refreshStatus() {
+      const box = document.getElementById("status");
+      try {
+        const response = await fetch("{{ url_for('status') }}");
+        const data = await response.json();
+        if (data.missing && data.missing.length) {
+          box.textContent = "Missing model files";
+          box.className = "status bad";
+        } else if (data.loading) {
+          box.textContent = "Loading models...";
+          box.className = "status warn";
+        } else if (data.loaded) {
+          box.textContent = "Models loaded · " + data.device;
+          box.className = "status good";
+        } else {
+          box.textContent = "Ready · lazy loading";
+          box.className = "status";
+        }
+      } catch (e) {
+        box.textContent = "Status unavailable";
+        box.className = "status bad";
+      }
+    }
+    refreshStatus();
+    setInterval(refreshStatus, 3000);
+  </script>
+</body>
+</html>

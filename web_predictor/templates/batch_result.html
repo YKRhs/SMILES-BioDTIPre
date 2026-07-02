@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Batch result · SMILES-BioDTIPre</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Batch prediction result</p>
+        <h1>SMILES-BioDTIPre</h1>
+      </div>
+      <a class="back" href="{{ url_for('index') }}">New prediction</a>
+    </header>
+
+    {% if error %}
+    <section class="alert">
+      <strong>Batch prediction failed:</strong> {{ error }}
+    </section>
+    {% else %}
+    <section class="result-card">
+      <p class="eyebrow">Summary</p>
+      <h2>{{ result.ok_count }} / {{ result.total }} samples predicted</h2>
+      <p>{{ result.positive_count }} interaction predictions, {{ result.negative_count }} non-interaction predictions, {{ result.error_count }} failed rows.</p>
+      <p>Elapsed time: {{ result.elapsed_seconds }} s</p>
+      <a class="download" href="{{ url_for('download', filename=result.filename) }}">Download CSV results</a>
+    </section>
+
+    <section class="table-panel">
+      <h2>Preview</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Row</th>
+              <th>SMILES</th>
+              <th>Protein length</th>
+              <th>XGBoost</th>
+              <th>LightGBM</th>
+              <th>Ensemble</th>
+              <th>Prediction</th>
+              <th>Error</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in result.preview %}
+            <tr>
+              <td>{{ row.row_index }}</td>
+              <td class="mono">{{ row.SMILES }}</td>
+              <td>{{ row.protein_length }}</td>
+              <td>{{ "%.4f"|format(row.xgb_probability) if row.error == "" else "" }}</td>
+              <td>{{ "%.4f"|format(row.lgb_probability) if row.error == "" else "" }}</td>
+              <td>{{ "%.4f"|format(row.ensemble_probability) if row.error == "" else "" }}</td>
+              <td>{{ row.prediction_label }}</td>
+              <td>{{ row.error }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>

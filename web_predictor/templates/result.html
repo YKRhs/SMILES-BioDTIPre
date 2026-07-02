@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prediction result · SMILES-BioDTIPre</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell narrow">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Single prediction result</p>
+        <h1>SMILES-BioDTIPre</h1>
+      </div>
+      <a class="back" href="{{ url_for('index') }}">New prediction</a>
+    </header>
+
+    {% if error %}
+    <section class="alert">
+      <strong>Prediction failed:</strong> {{ error }}
+    </section>
+    {% else %}
+    <section class="result-card {{ 'positive' if result.prediction == 1 else 'negative' }}">
+      <p class="eyebrow">Final prediction</p>
+      <h2>{{ result.prediction_text }}</h2>
+      <div class="probability">{{ "%.4f"|format(result.probability) }}</div>
+      <p>Decision threshold: {{ "%.3f"|format(result.threshold) }}</p>
+    </section>
+
+    <section class="metrics">
+      <div>
+        <span>XGBoost probability</span>
+        <strong>{{ "%.4f"|format(result.prob_xgb) }}</strong>
+      </div>
+      <div>
+        <span>LightGBM probability</span>
+        <strong>{{ "%.4f"|format(result.prob_lgb) }}</strong>
+      </div>
+      <div>
+        <span>Protein length</span>
+        <strong>{{ result.sequence_length }}</strong>
+      </div>
+      <div>
+        <span>Device</span>
+        <strong>{{ result.device }}</strong>
+      </div>
+      <div>
+        <span>Elapsed time</span>
+        <strong>{{ result.elapsed_seconds }} s</strong>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>
