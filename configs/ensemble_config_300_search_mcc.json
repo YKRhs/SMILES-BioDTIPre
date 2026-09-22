@@ -5,8 +5,8 @@
   "xgb_max_depth": 8,
   "n_jobs": 4,
   "random_state": 42,
-  "best_xgb_weight": 0.56,
-  "best_lgb_weight": 0.43999999999999995,
-  "best_threshold": 0.449,
+  "best_xgb_weight": 0.62,
+  "best_lgb_weight": 0.38,
+  "best_threshold": 0.39,
   "best_mcc": 0.6553245310910377
 }

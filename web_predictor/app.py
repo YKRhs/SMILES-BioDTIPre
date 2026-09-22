@@ -31,9 +31,9 @@ CONFIG_PATH = PROJECT_DIR / "ensemble_config_300_search_mcc.json"
 CONFIG_PATH_IN_CONFIGS = PROJECT_DIR / "configs" / "ensemble_config_300_search_mcc.json"
 
 MAX_LENGTH = 512
-DEFAULT_XGB_WEIGHT = 0.56
-DEFAULT_LGB_WEIGHT = 0.44
-DEFAULT_THRESHOLD = 0.449
+DEFAULT_XGB_WEIGHT = 0.62
+DEFAULT_LGB_WEIGHT = 0.38
+DEFAULT_THRESHOLD = 0.39
 
 app = Flask(__name__)
 OUTPUT_DIR.mkdir(exist_ok=True)

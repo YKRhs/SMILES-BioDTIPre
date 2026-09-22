@@ -178,9 +178,9 @@ Default hyperparameters are consistent with the final paper setting:
 
 The final ensemble setting used in the paper is stored in `configs/ensemble_config_300_search_mcc.json`:
 
-- XGBoost weight = `0.56`
-- LightGBM weight = `0.44`
-- Decision threshold = `0.449`
+- XGBoost weight = `0.62`
+- LightGBM weight = `0.38`
+- Decision threshold = `0.39`
 
 Most paths and model hyperparameters can be changed from the command line. For example:
 
