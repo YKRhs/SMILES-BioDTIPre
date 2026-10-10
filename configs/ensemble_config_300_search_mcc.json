@@ -1,12 +1,12 @@
 {
   "script_version": "independent_test_300_search_mcc_v1",
-  "n_estimators_xgb": 6000,
+  "n_estimators_xgb": 7000,
   "n_estimators_lgb": 5000,
-  "xgb_max_depth": 8,
+  "xgb_max_depth": 12,
   "n_jobs": 4,
   "random_state": 42,
   "best_xgb_weight": 0.62,
   "best_lgb_weight": 0.38,
   "best_threshold": 0.39,
-  "best_mcc": 0.6553245310910377
+  "best_mcc": 0.6612
 }

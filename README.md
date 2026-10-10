@@ -165,8 +165,8 @@ The script searches XGBoost-LightGBM ensemble weight and decision threshold on t
 
 Default hyperparameters are consistent with the final paper setting:
 
-- XGBoost `n_estimators = 6000`
-- XGBoost `max_depth = 8`
+- XGBoost `n_estimators = 7000`
+- XGBoost `max_depth = 12`
 - XGBoost `learning_rate = 0.02`
 - XGBoost `subsample = 0.8`
 - XGBoost `colsample_bytree = 0.8`
@@ -185,7 +185,7 @@ The final ensemble setting used in the paper is stored in `configs/ensemble_conf
 Most paths and model hyperparameters can be changed from the command line. For example:
 
 ```bash
-python src/run_10fold_cv.py --data data/ncl_train_smilesT5_bioT5.csv --n_estimators_xgb 6000 --n_estimators_lgb 5000 --xgb_max_depth 8
+python src/run_10fold_cv.py --data data/ncl_train_smilesT5_bioT5.csv --n_estimators_xgb 7000 --n_estimators_lgb 5000 --xgb_max_depth 12
 python src/run_independent_test.py --train data/ncl_train_smilesT5_bioT5.csv --test data/test_smilesT5_bioT5.csv --weight_step 0.01 --threshold_step 0.001
 ```
 
